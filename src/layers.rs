@@ -82,8 +82,6 @@ impl Layer for Linear {
     }
 
     // Update the parameters of this layer based on the gradients
-    // The "is_ascent" flag tells us whether to do
-    // gradient ascent (maximize a function) or gradient descent (minimize a function)
     fn update_params(
         &mut self,
         dw: &Array2<f64>,
