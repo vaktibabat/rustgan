@@ -17,12 +17,9 @@ pub trait Layer {
         x: Array2<f64>,
     ) -> (Array2<f64>, Option<Array2<f64>>, Option<Array1<f64>>);
     // How to update the parameters of this layer based on its gradients (if there are any)?
-    fn update_params(
-        &mut self,
-        dw: &Array2<f64>,
-        db: &Array1<f64>,
-        learning_rate: f64
-    );
+    fn update_params(&mut self, dw: &Array2<f64>, db: &Array1<f64>, learning_rate: f64);
+    // The shape of this layer, if it has any (i.e. activation layers do not have any shape)
+    fn shape(&self) -> Option<(usize, usize)>;
 }
 
 //-----------------START TYPES OF LAYERS-------------------------
@@ -82,14 +79,13 @@ impl Layer for Linear {
     }
 
     // Update the parameters of this layer based on the gradients
-    fn update_params(
-        &mut self,
-        dw: &Array2<f64>,
-        db: &Array1<f64>,
-        learning_rate: f64
-    ) {
+    fn update_params(&mut self, dw: &Array2<f64>, db: &Array1<f64>, learning_rate: f64) {
         self.w = &self.w - learning_rate * dw;
         self.b = &self.b - learning_rate * db;
+    }
+
+    fn shape(&self) -> Option<(usize, usize)> {
+        Some((self.w.nrows(), self.w.ncols()))
     }
 }
 
@@ -115,6 +111,10 @@ impl Layer for ReLU {
     fn update_params(&mut self, _: &Array2<f64>, _: &Array1<f64>, _: f64) {
         // No params to be updated
         ()
+    }
+
+    fn shape(&self) -> Option<(usize, usize)> {
+        None
     }
 }
 
@@ -150,6 +150,10 @@ impl Layer for Sigmoid {
     fn update_params(&mut self, _: &Array2<f64>, _: &Array1<f64>, _: f64) {
         // No params to be updated
         ()
+    }
+
+    fn shape(&self) -> Option<(usize, usize)> {
+        None
     }
 }
 

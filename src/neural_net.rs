@@ -96,7 +96,7 @@ impl NeuralNet {
 
     // Backward pass - Return the gradients of the loss WRT the model parameters
     // also returns the gradient of the loss WRT the input, which is useful when training some types of models
-    // such as GANs 
+    // such as GANs
     pub fn backward(
         &mut self,
         dy: Array2<f64>,

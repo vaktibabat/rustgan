@@ -1,3 +1,4 @@
+use clap::Parser;
 use ndarray::Array2;
 use ndarray::{Array, ArrayView};
 use rand::{distributions::Distribution, thread_rng};
@@ -5,10 +6,6 @@ use rand_distr::Normal;
 use rustgan::layers::{Linear, ReLU, Sigmoid};
 use std::str::FromStr;
 use std::{fs::File, io::Read};
-use clap::Parser;
-
-// The images are 150x150
-const IMAGE_SIZE: usize =  28;
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -17,9 +14,8 @@ struct Args {
     mnist_path: String,
     /// The path under which to save intermediate training images
     #[arg(short, long)]
-    inter_path: String
+    inter_path: String,
 }
-
 
 use rustgan::networks::GenerativeAdverserial;
 pub struct Dataset {
@@ -112,7 +108,6 @@ pub fn parse_dataset(path: &str) -> Dataset {
 fn main() {
     let args = Args::parse();
     let dataset = parse_dataset(&args.mnist_path);
-
 
     let mut gan = GenerativeAdverserial::new(50, 64, 0.003, Some(args.inter_path));
     // Our discriminator
